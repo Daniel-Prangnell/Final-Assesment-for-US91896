@@ -3,10 +3,27 @@ import os
 import time
 import math
 #functions
-def FindLength():
-  input("y")
-  
 
+
+def find_length(): #function to find lengths
+
+  #Variables for this function
+  number_of_sides = 1
+  side_lengths = [0,0,0]
+  while 0 < number_of_sides <= 3:
+    print("What is the length of side " + str(number_of_sides) + "? \nIf the side is unknown please enter '0'")
+    #print(side_lengths + " " + last_entered_length)
+    try:
+      last_entered_length = int(input("Please enter value here: "))
+      if last_entered_length >= 0:
+        side_lengths[number_of_sides - 1] = (last_entered_length) 
+        number_of_sides += 1
+        print()
+        
+    except:
+      print("\nError: Please enter a valid intiger")
+  
+  #return side_lengths
 #---------------Main Routine----------------
 
 #Date of Creation:28/07/2022
@@ -14,22 +31,31 @@ def FindLength():
 #version: 1.0
 #creator: Daniel Prangnell
 
-print("Welcome to this right angle triangle calculator V1.0 \n\nThis is designed to make your homework easier.")
+
+print("Welcome to this right angle triangle calculator V1.0")
+
+print("This is designed to make your homework easier.")
 input("Press Enter to begin:")
 time.sleep(2) #Adds 2 second pause
 os.system('clear') #Clears screen
-Exit_Code = ""
-while Exit_Code != "xxx":
+exit_code = ""
+while exit_code != "xxx":
+
+  #Date of Creation:28/07/2022
+  #purpose: to find the lengths and angles
+  #version: 1.0
+  #creator: Daniel Prangnell
+  
   #Getting known length values
-  Length_1 = 0
-  Length_2 = 0
-  Length_3 = 0
-  FindLength()
+  length_1 = 0
+  length_2 = 0
+  length_3 = 0
+  find_length()
   
   #Getting known aqngle values
-  Angle_1 = 0
-  Angle_2 = 0
-  Angle_3 = math.pi / 2 #90° angle
+  angle_1 = 0
+  angle_2 = 0
+  angle_3 = math.pi / 2 #90° angle
   
   #calculations (lengths)
   
@@ -42,5 +68,6 @@ while Exit_Code != "xxx":
   #repeat
   break
 
+  
 #show all previous values
   
