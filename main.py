@@ -2,8 +2,8 @@
 import os
 import time
 import math
+import sys
 #functions
-
 
 def find_length(side_lengths): #function to find known lengths
 
@@ -80,28 +80,38 @@ def find_angles(angle_values, side_lengths): #function to find known angles
 
   #if they entered all the values checking to make sure the add up to 180
   if angle_values[0] != 0 and angle_values[1] != 0 and angle_values[2] != 0:
-    #math
+    #testing to make sure if they entered all that it adds up to 180°
     if angle_values[0] + angle_values[1] + angle_values[2] != 180: 
       #printing error message
-      print("Error: all angles do not add up to 180°\n     This includes the already known 90° angle")
+      os.system('clear') #Clears screen
+      print("Error: all angles do not add up to 180° \n(This includes the already known 90° angle) \n")
+      find_angles(angle_values, side_lengths)
     else:
       return angle_values;
   #if they dont know 1 angle 
   elif angle_values.count(0) == 1:
     return angle_values;
 
-  elif angle_values.count(0) == 0 and side_lengths.count(0) == 1:
+  if angle_values.count(0) == 0 and side_lengths.count(0) == 1 or angle_values.count(0) == 1 and side_lengths.count(0) == 0:
     os.system('clear') #Clears screen
     print("Error: only 1 value entered")
     find_length(side_lengths)
-    
 
+  if angle_values.count(0) == 0 and side_lengths.count(0) == 0:
+    os.system('clear') #Clears screen
+    print("Error: all values entered \n")
+    do_another(do_another_triangle)
+
+
+def do_another(do_another_triangle):
+  do_another_triangle = input("do you wish to do another?").lower()
+  return do_another_triangle
    
 #---------------Main Routine----------------
 
 #Date of Creation:28/07/2022
 #purpose: to welcome the user
-#version: 1.0
+#version: 1.0.1
 #creator: Daniel Prangnell
 
 
@@ -111,8 +121,7 @@ print("This is designed to make your homework easier.")
 input("Press Enter to begin:")
 time.sleep(2) #Adds 2 second pause
 os.system('clear') #Clears screen
-exit_code = ""
-while exit_code != "xxx":
+while True:
 
   #Date of Creation:28/07/2022
   #purpose: to find the lengths and angles
@@ -128,7 +137,7 @@ while exit_code != "xxx":
   #Getting known angle values
   angle_values = [90,0,0]
 
-  find_angles(angle_values)
+  find_angles(angle_values, side_lengths)
 
 
   #length values put into thier own values
@@ -142,74 +151,111 @@ while exit_code != "xxx":
   angle_opposite = angle_values[2]
 
   #angles in radians
-  angle_adjacent_radians = math.radians(angle_values[1])
-  angle_opposite_radians = math.radians(angle_values[2])
+  angle_adjacent_radians = math.radians(angle_values[1]) #making the values radians
+  angle_opposite_radians = math.radians(angle_values[2]) #making the values radians
   angle_hypotenuse_radians = math.pi / 2 #90° angle
 
-#Date of Creation:05/08/2022
-#purpose: to find the lengths and angles using math
-#version: 1.0
-#creator: Daniel Prangnell
-  angle_calculations = "unfinshed"
   
+  #Date of Creation: 05/08/2022
+  #purpose: to find the lengths and angles using math
+  #version: 1.0
+  #creator: Daniel Prangnell
+  while angle_values.count(0) != 0 and side_lengths.count(0) != 0:
     #calculations (lengths)
-  if side_lengths.count(0) == 1:
-    if length_hypotenuse == 0:
-      length_hypotenuse = round(math.sqrt(math.pow(length_adjacent, 2) + math.pow(length_opposite, 2)),2)
-    elif length_adjacent == 0:
-      length_adjacent = round(math.sqrt(math.pow(length_hypotenuse, 2) - math.pow(length_opposite, 2)), 2)
-    elif length_opposite == 0:
-      length_opposite = round(math.sqrt(math.pow(length_hypotenuse, 2) - math.pow(length_adjacent, 2)), 2)
-    
-  if side_lengths.count(0) == 2:
-    if length_hypotenuse == 0:
-      print("thing")
+    if side_lengths.count(0) == 1: #to see whether there is only one unknown length
+      if length_hypotenuse == 0: #to see if the hypotenuse is the unknown length
+        #A² + B² = C²
+        length_hypotenuse = round(math.sqrt(math.pow(length_adjacent, 2) + math.pow(length_opposite, 2)),2)
+        side_lengths[0] = length_hypotenuse #asigning the value to the list
+      elif length_adjacent == 0:  #to see if the adjacent is the unknown length
+        #A² = C² - B²
+        length_adjacent = round(math.sqrt(math.pow(length_hypotenuse, 2) - math.pow(length_opposite, 2)), 2)
+        side_lengths[1] = length_adjacent #asigning the value to the list
+      elif length_opposite == 0:  #to see if the opposite is the unknown length
+        #B² = C² - A²
+        length_opposite = round(math.sqrt(math.pow(length_hypotenuse, 2) - math.pow(length_adjacent, 2)), 2)
+        side_lengths[2] = length_opposite #asigning the value to the list
+      
+    if side_lengths.count(0) == 2: #to see whether there is 2 unknown lengths
+      
+      if length_adjacent == 0 and angle_adjacent != 0:
+        if length_hypotenuse != 0:
+          length_adjacent = round(math.cos(angle_adjacent_radians) * length_hypotenuse, 2)
+        if length_opposite != 0:
+          length_adjacent = round(math.tan(angle_adjacent_radians) * length_oppopsite, 2)
+        side_lengths[1] = length_adjacent
 
-
-
-
+        
+      elif length_opposite == 0 and angle_opposite != 0: 
+        if length_hypotenuse != 0:
+          length_opposite = round(math.sin(angle_opposite_radians) * length_hypotenuse, 2)
+        if length_adjacent != 0:
+          length_opposite = round(math.tan(angle_opposite_radians) * length_adjacent, 2)
+        side_lengths[2] = length_opposite 
   
-    #Calculations (angles)
-  while angle_calculations != "finished":
+  
+      
     
-    
-    
-
-    
+      #Calculations (angles)
     if angle_adjacent == 0 and angle_opposite != 0:
-      angle_adjacent = 90 - angle_opposite
+      angle_adjacent = round(90 - angle_opposite, 2)
       angle_adjacent_radians = math.radians(angle_adjacent)
-      angle_adjacent_found = True
+      side_lengths[1] = length_adjacent
       
-    elif angle_opposite == 0 and angle_adjacent != 0:
-      angle_opposite = 90 - angle_adjacent
+    if angle_opposite == 0 and angle_adjacent != 0:
+      angle_opposite = round(90 - angle_adjacent, 2)
       angle_opposite_radians = math.radians(angle_opposite)
-      angle_opposite_found = True
-
-    if angle_adjacent == 0 and angle_opposite == 0:
+      side_lengths[2] = length_opposite
+  
+    if angle_adjacent == 0 and angle_opposite == 0 and length_opposite != 0 and length_hypotenuse != 0:
       angle_adjacent_radians = math.asin(length_opposite / length_hypotenuse)
+      angle_opposite_radians = math.acos(length_opposite / length_hypotenuse)
+      angle_adjacent = round(math.degrees(angle_adjacent_radians), 2)
+      angle_opposite = round(math.degrees(angle_opposite_radians), 2)
+      side_lengths[1] = length_adjacent
+      side_lengths[2] = length_opposite
+      
+    if angle_adjacent == 0 and angle_opposite == 0 and length_adjacent != 0 and length_hypotenuse != 0:
+      angle_adjacent_radians = math.asin(length_adjacent / length_hypotenuse)
       angle_opposite_radians = math.acos(length_adjacent / length_hypotenuse)
-      angle_adjacent = math.d
+      angle_adjacent = round(math.degrees(angle_adjacent_radians), 2)
+      angle_opposite = round(math.degrees(angle_opposite_radians), 2)
+      side_lengths[1] = length_adjacent
+      side_lengths[2] = length_opposite
+  
+    if angle_adjacent == 0 and angle_opposite == 0 and length_adjacent != 0 and length_opposite != 0:
+      angle_adjacent_radians = math.asin(length_opposite / length_adjacent)
+      angle_opposite_radians = math.acos(length_opposite / length_adjacent)
+      angle_adjacent = round(math.degrees(angle_adjacent_radians), 2)
+      angle_opposite = round(math.degrees(angle_opposite_radians), 2)
+      side_lengths[1] = length_adjacent
+      side_lengths[2] = length_opposite
       
-      angle_adjacent_found = True
-      angle_opposite_found = True
-      
-      
-    print(angle_adjacent)
-    print(angle_opposite)
-    print(angle_hypotenuse)
-    print(length_hypotenuse)
-    print(length_adjacent)
-    print(length_opposite)
-    break
+    
+    
+  print(angle_adjacent)
+  print(angle_opposite)
+  print(angle_hypotenuse)
+  print(length_hypotenuse)
+  print(length_adjacent)
+  print(length_opposite)
+    
     
   #show user all values
   
   #store values in external txt file
         
+  
+
+  #Date of Creation: 16/08/2022
+  #purpose: to find if the user wants to to another triangle
+  #version: 1.0
+  #creator: Daniel Prangnell
+
   #repeat
-  loop = input("do you wish to do another?").lower()
-  if loop == "yes" or loop == "y":
+  do_another_triangle = "no"
+  do_another(do_another_triangle)
+  if do_another_triangle == "y" or do_another_triangle == "yes":
     continue
   else:
     break
