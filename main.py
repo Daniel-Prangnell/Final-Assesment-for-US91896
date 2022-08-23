@@ -3,6 +3,7 @@ import os
 import time
 import math
 import sys
+
 #functions
 
 def find_length(side_lengths): #function to find known lengths
@@ -19,14 +20,18 @@ def find_length(side_lengths): #function to find known lengths
     #using try to check to make sure that if they enter a letter/word instead of a number
     try:
       #getting user input
-      last_entered_length = float(input("Please enter value here: "))
+      last_entered_length = float(input("Please enter value here:"))
       #if they entered a valid number (not a negitive number or letter/word)
       if last_entered_length >= 0:
-        #inputing their input into list
-        side_lengths[number_of_sides - 1] = (last_entered_length) 
-        #so that it doesnt loop to many times and so it will ask for the next type of side
-        number_of_sides += 1
-        print()
+        if side_lengths[0] < side_lengths[1] and side_lengths[0] < side_lengths[2]:
+          print("Error: The hypotenuse should be the longest length")
+          continue
+        else:
+          #inputing their input into list
+          side_lengths[number_of_sides - 1] = (last_entered_length) 
+          #so that it doesnt loop to many times and so it will ask for the next type of side
+          number_of_sides += 1
+          print()
       else:
         #printing a error message if the value is less than 0
         print("\nError: Please enter a valid number")
@@ -46,7 +51,9 @@ def find_length(side_lengths): #function to find known lengths
     #print error message
     print("Error: Can not have all lengths be the same value")
     find_length(side_lengths)
-    
+
+  
+  
   os.system('clear') #Clears screen
   return side_lengths;
 
@@ -54,7 +61,7 @@ def find_length(side_lengths): #function to find known lengths
 def find_angles(angle_values, side_lengths): #function to find known angles
   
   #Variables for this function
-  angles = ["adjasent","opposite"]
+  angles = ["adjacent","opposite"]
   number_known_angles = 1
   #looping untill it has asked what all the values are
   while 0 < number_known_angles <= 2:
@@ -92,11 +99,6 @@ def find_angles(angle_values, side_lengths): #function to find known angles
   elif angle_values.count(0) == 1:
     return angle_values;
 
-  if angle_values.count(0) == 0 and side_lengths.count(0) == 1 or angle_values.count(0) == 1 and side_lengths.count(0) == 0:
-    os.system('clear') #Clears screen
-    print("Error: only 1 value entered")
-    find_length(side_lengths)
-
   if angle_values.count(0) == 0 and side_lengths.count(0) == 0:
     os.system('clear') #Clears screen
     print("Error: all values entered \n")
@@ -104,10 +106,14 @@ def find_angles(angle_values, side_lengths): #function to find known angles
 
 
 def do_another(do_another_triangle):
-  do_another_triangle = input("do you wish to do another?").lower()
+  do_another_triangle = input("do you wish to do another? ").lower()
   return do_another_triangle
    
 #---------------Main Routine----------------
+#to clear the history file  
+with open("history.txt",'w') as file:
+    pass
+
 
 #Date of Creation:28/07/2022
 #purpose: to welcome the user
@@ -121,25 +127,43 @@ print("This is designed to make your homework easier.")
 input("Press Enter to begin:")
 time.sleep(2) #Adds 2 second pause
 os.system('clear') #Clears screen
+
+number_of_loops = 1
+
+
 while True:
 
   #Date of Creation:28/07/2022
   #purpose: to find the lengths and angles
-  #version: 1.2
+  #version: 1.3
   #creator: Daniel Prangnell
   
   #Getting known length values
-  
-  side_lengths = [0,0,0]
-  
-  find_length(side_lengths)
-  
-  #Getting known angle values
   angle_values = [90,0,0]
+  side_lengths = [0,0,0]
+  two_values_entered = False
+  
+  while two_values_entered == False:
+    
+    find_length(side_lengths)
+    
+    #Getting known angle values
+    
+    find_angles(angle_values, side_lengths)
+    #if one length is unknown
+    if side_lengths.count(0) == 1:
+      two_values_entered = True
+    #if one length is known and one angle (other than the 90° angle) is known
+    elif side_lengths.count(0) == 2 and angle_values.count(0) == 1:
+      two_values_entered = True
 
-  find_angles(angle_values, side_lengths)
+    else:
+      os.system('clear') #Clears screen
+      print("Error: only 1 value entered \n")
 
 
+
+    
   #length values put into thier own values
   length_hypotenuse = side_lengths[0]
   length_adjacent = side_lengths[1]
@@ -160,8 +184,11 @@ while True:
   #purpose: to find the lengths and angles using math
   #version: 1.0
   #creator: Daniel Prangnell
+  
   while angle_values.count(0) != 0 and side_lengths.count(0) != 0:
+    
     #calculations (lengths)
+    
     if side_lengths.count(0) == 1: #to see whether there is only one unknown length
       if length_hypotenuse == 0: #to see if the hypotenuse is the unknown length
         #A² + B² = C²
@@ -232,19 +259,31 @@ while True:
       side_lengths[2] = length_opposite
       
     
-    
-  print(angle_adjacent)
-  print(angle_opposite)
-  print(angle_hypotenuse)
-  print(length_hypotenuse)
-  print(length_adjacent)
-  print(length_opposite)
-    
-    
   #show user all values
+  os.system('clear') #Clears screen
+  print("The adjacent angle is " + str(angle_adjacent) + "°")
+  print("The opposite angle is " + str(angle_opposite) + "°")
+  print("The hypotenuse angle is " + str(angle_hypotenuse) + "°")
+  print("The hypotenuse length is " + str(length_hypotenuse))
+  print("The adjacent length is " + str(length_adjacent))
+  print("The opposite length is " + str(length_opposite))
+    
+    
+  #Date of Creation: 18/08/2022
+  #purpose: store triangle values to a txt file so it can be saved for later
+  #version: 1.0
+  #creator: Daniel Prangnell
   
   #store values in external txt file
-        
+  save_file = open("history.txt", "a")
+  save_file.write("\nTriangle " + str(number_of_loops) + " sizes: \n")
+  save_file.write("The adjacent angle is " + str(angle_adjacent) + "°\n")
+  save_file.write("The opposite angle is " + str(angle_opposite) + "°\n")
+  save_file.write("The hypotenuse angle is " + str(angle_hypotenuse) + "°\n")
+  save_file.write("The hypotenuse length is " + str(length_hypotenuse) + "\n")
+  save_file.write("The adjacent length is " + str(length_adjacent) + "\n")
+  save_file.write("The opposite length is " + str(length_opposite) + "\n")
+  save_file.close()
   
 
   #Date of Creation: 16/08/2022
@@ -254,13 +293,18 @@ while True:
 
   #repeat
   do_another_triangle = "no"
-  do_another(do_another_triangle)
+  do_another_triangle = do_another(do_another_triangle)
   if do_another_triangle == "y" or do_another_triangle == "yes":
+    number_of_loops += 1
+    os.system('clear') #Clears screen
     continue
   else:
+    os.system('clear') #Clears screen
     break
 
   
 #show all previous values
 
-
+save_file = open("history.txt", "r")
+print(save_file.read())
+save_file.close()
