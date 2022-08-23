@@ -150,8 +150,8 @@ while True:
     #Getting known angle values
     
     find_angles(angle_values, side_lengths)
-    #if one length is unknown
-    if side_lengths.count(0) == 1:
+    #if one or no lengths are unknown
+    if side_lengths.count(0) <= 1:
       two_values_entered = True
     #if one length is known and one angle (other than the 90° angle) is known
     elif side_lengths.count(0) == 2 and angle_values.count(0) == 1:
