@@ -52,6 +52,10 @@ def find_length(side_lengths): #function to find known lengths
     print("Error: Can not have all lengths be the same value")
     find_length(side_lengths)
 
+  if side_lengths[0] < side_lengths[1] or side_lengths[0] < side_lengths[2]:
+    print("hypotenuse ")
+    find_length(side_lengths)
+
   
   
   os.system('clear') #Clears screen
@@ -120,6 +124,114 @@ with open("history.txt",'w') as file:
 #version: 1.0.1
 #creator: Daniel Prangnell
 
+def length_calculations(side_lengths, angle_values):
+#length values put into thier own values
+  length_hypotenuse = side_lengths[0]
+  length_adjacent = side_lengths[1]
+  length_opposite = side_lengths[2]
+  
+  #angles in degrees
+  angle_hypotenuse = 90
+  angle_adjacent = angle_values[1]
+  angle_opposite = angle_values[2]
+
+  #angles in radians
+  angle_adjacent_radians = math.radians(angle_values[1]) #making the values radians
+  angle_opposite_radians = math.radians(angle_values[2]) #making the values radians
+  angle_hypotenuse_radians = math.pi / 2 #90° angle
+
+
+  #*********************calculations (lengths)*********************
+  
+  if side_lengths.count(0) == 1: #to see whether there is only one unknown length
+    if length_hypotenuse == 0: #to see if the hypotenuse is the unknown length
+      #A² + B² = C²
+      length_hypotenuse = round(math.sqrt(math.pow(length_adjacent, 2) + math.pow(length_opposite, 2)),2)
+      side_lengths[0] = length_hypotenuse #asigning the value to the list
+    elif length_adjacent == 0:  #to see if the adjacent is the unknown length
+      #A² = C² - B²
+      length_adjacent = round(math.sqrt(math.pow(length_hypotenuse, 2) - math.pow(length_opposite, 2)), 2)
+      side_lengths[1] = length_adjacent #asigning the value to the list
+    elif length_opposite == 0:  #to see if the opposite is the unknown length
+      #B² = C² - A²
+      length_opposite = round(math.sqrt(math.pow(length_hypotenuse, 2) - math.pow(length_adjacent, 2)), 2)
+      side_lengths[2] = length_opposite #asigning the value to the list
+    
+  if side_lengths.count(0) == 2: #to see whether there is 2 unknown lengths
+    if length_adjacent == 0 and angle_adjacent != 0: #see if the adjacent length is unknown and is the adjacent angle is known
+      if length_hypotenuse != 0: #see if the hypotenuse length is known
+        length_adjacent = round(math.cos(angle_adjacent_radians) * length_hypotenuse, 2) #calculation for adjacent length using adjacent angle and the hypotenuse length
+      if length_opposite != 0: #see if the opposite length is known
+        length_adjacent = round(math.tan(angle_adjacent_radians) * length_opposite, 2) #calculation for adjacent length using adjacent angle and the opposite length
+      side_lengths[1] = length_adjacent #putting value in list
+
+      
+    elif length_opposite == 0 and angle_opposite != 0: #see if the oppostie length is unknown and is the opposite angle is known
+      if length_hypotenuse != 0: #see if the hypotenuse length is known
+        length_opposite = round(math.sin(angle_opposite_radians) * length_hypotenuse, 2) #calculation for opposite length using adjacent angle and the hypotenuse length
+      if length_adjacent != 0: #see if the adjacent length is known
+        length_opposite = round(math.tan(angle_opposite_radians) * length_adjacent, 2) #calculation for opposite length using adjacent angle and the adjacent length
+      side_lengths[2] = length_opposite #putting value in list
+
+
+
+def angle_calculations(side_lengths, angle_values):
+  #length values put into thier own values
+  length_hypotenuse = side_lengths[0]
+  length_adjacent = side_lengths[1]
+  length_opposite = side_lengths[2]
+  
+  #angles in degrees
+  angle_hypotenuse = 90
+  angle_adjacent = angle_values[1]
+  angle_opposite = angle_values[2]
+  print(angle_adjacent)
+  print(angle_opposite)
+
+  #angles in radians
+  angle_adjacent_radians = math.radians(angle_values[1]) #making the values radians
+  angle_opposite_radians = math.radians(angle_values[2]) #making the values radians
+  angle_hypotenuse_radians = math.pi / 2 #90° angle
+
+
+  #*********************Calculations (angles)*********************
+
+    
+  if angle_adjacent == 0 and angle_opposite != 0: #if the adjacent angle is unknown and opposite angle is known
+    angle_adjacent = round(90 - angle_opposite, 2) #calculation: angle 1 = 180 - angle 2 - angle 3
+    angle_adjacent_radians = math.radians(angle_adjacent) #Making angle into radian
+    angle_values[1] = angle_adjacent #putting value in list
+    
+  elif angle_opposite == 0 and angle_adjacent != 0: #if the opposite angle is unknown and adjacent angle is known
+    angle_opposite = round(90 - angle_adjacent, 2) #calculation: angle 1 = 180 - angle 2 - angle 3
+    angle_opposite_radians = math.radians(angle_opposite) #Making angle into radian
+    angle_values[2] = angle_opposite #putting value in list
+
+  if angle_adjacent == 0 and angle_opposite == 0:
+    if length_opposite != 0 and length_hypotenuse != 0:
+      angle_adjacent_radians = math.asin(length_opposite / length_hypotenuse) #calculation: Soh Cah Toa
+      angle_opposite_radians = math.acos(length_opposite / length_hypotenuse) #calculation: Soh Cah Toa
+      angle_adjacent = round(math.degrees(angle_adjacent_radians), 2) #Making angle into a radian
+      angle_opposite = round(math.degrees(angle_opposite_radians), 2) #Making angle into a radian
+      angle_values[1] = angle_adjacent #putting value in list
+      angle_values[2] = angle_opposite #putting value in list
+      
+    elif length_adjacent != 0 and length_hypotenuse != 0:
+      angle_adjacent_radians = math.asin(length_adjacent / length_hypotenuse) #calculation: Soh Cah Toa
+      angle_opposite_radians = math.acos(length_adjacent / length_hypotenuse) #calculation: Soh Cah Toa
+      angle_adjacent = round(math.degrees(angle_adjacent_radians), 2) #Making angle into a radian
+      angle_opposite = round(math.degrees(angle_opposite_radians), 2) #Making angle into a radian
+      angle_values[1] = angle_adjacent #putting value in list
+      angle_values[2] = angle_opposite #putting value in list
+  
+    elif length_adjacent != 0 and length_opposite != 0:
+      angle_adjacent_radians = math.asin(length_opposite / length_adjacent) #calculation: Soh Cah Toa
+      angle_opposite_radians = math.acos(length_opposite / length_adjacent) #calculation: Soh Cah Toa
+      angle_adjacent = round(math.degrees(angle_adjacent_radians), 2) #Making angle into a radian
+      angle_opposite = round(math.degrees(angle_opposite_radians), 2) #Making angle into a radian
+      side_lengths[1] = angle_adjacent #putting value in list
+      side_lengths[2] = angle_opposite #putting value in list
+
 print("Welcome to this right angle triangle calculator V1.0")
 
 print("This is designed to make your homework easier.")
@@ -162,111 +274,26 @@ while True:
       os.system('clear') #Clears screen
       print("Error: only 1 value entered \n")
 
-
-
-  #length values put into thier own values
-  length_hypotenuse = side_lengths[0]
-  length_adjacent = side_lengths[1]
-  length_opposite = side_lengths[2]
-  
-  #angles in degrees
-  angle_hypotenuse = 90
-  angle_adjacent = angle_values[1]
-  angle_opposite = angle_values[2]
-
-  #angles in radians
-  angle_adjacent_radians = math.radians(angle_values[1]) #making the values radians
-  angle_opposite_radians = math.radians(angle_values[2]) #making the values radians
-  angle_hypotenuse_radians = math.pi / 2 #90° angle
-
-  
   #Date of Creation: 05/08/2022
   #purpose: to find the lengths and angles using math
   #version: 1.0
   #creator: Daniel Prangnell
   
-  while angle_values.count(0) != 0 and side_lengths.count(0) != 0:
-    
-    #*********************calculations (lengths)*********************
-    
-    if side_lengths.count(0) == 1: #to see whether there is only one unknown length
-      if length_hypotenuse == 0: #to see if the hypotenuse is the unknown length
-        #A² + B² = C²
-        length_hypotenuse = round(math.sqrt(math.pow(length_adjacent, 2) + math.pow(length_opposite, 2)),2)
-        side_lengths[0] = length_hypotenuse #asigning the value to the list
-      elif length_adjacent == 0:  #to see if the adjacent is the unknown length
-        #A² = C² - B²
-        length_adjacent = round(math.sqrt(math.pow(length_hypotenuse, 2) - math.pow(length_opposite, 2)), 2)
-        side_lengths[1] = length_adjacent #asigning the value to the list
-      elif length_opposite == 0:  #to see if the opposite is the unknown length
-        #B² = C² - A²
-        length_opposite = round(math.sqrt(math.pow(length_hypotenuse, 2) - math.pow(length_adjacent, 2)), 2)
-        side_lengths[2] = length_opposite #asigning the value to the list
-      
-    if side_lengths.count(0) == 2: #to see whether there is 2 unknown lengths
-      
-      if length_adjacent == 0 and angle_adjacent != 0: #see if the adjacent length is unknown and is the adjacent angle is known
-        if length_hypotenuse != 0: #see if the hypotenuse length is known
-          length_adjacent = round(math.cos(angle_adjacent_radians) * length_hypotenuse, 2) #calculation for adjacent length using adjacent angle and the hypotenuse length
-        if length_opposite != 0: #see if the opposite length is known
-          length_adjacent = round(math.tan(angle_adjacent_radians) * length_opposite, 2) #calculation for adjacent length using adjacent angle and the opposite length
-        side_lengths[1] = length_adjacent #putting value in list
+  while angle_values.count(0) != 0 or side_lengths.count(0) != 0: #to loop the calculation functions to make sure every value is worked out
+    length_calculations(side_lengths, angle_values) #length calulation function
 
-        
-      elif length_opposite == 0 and angle_opposite != 0: #see if the oppostie length is unknown and is the opposite angle is known
-        if length_hypotenuse != 0: #see if the hypotenuse length is known
-          length_opposite = round(math.sin(angle_opposite_radians) * length_hypotenuse, 2) #calculation for opposite length using adjacent angle and the hypotenuse length
-        if length_adjacent != 0: #see if the adjacent length is known
-          length_opposite = round(math.tan(angle_opposite_radians) * length_adjacent, 2) #calculation for opposite length using adjacent angle and the adjacent length
-        side_lengths[2] = length_opposite #putting value in list
+    angle_calculations(side_lengths, angle_values) #angle calulation function
+
+
   
-  
-      
-    
-      #*********************Calculations (angles)*********************
-        
-    if angle_adjacent == 0 and angle_opposite != 0: #if the adjacent angle is unknown and opposite angle is known
-      angle_adjacent = round(90 - angle_opposite, 2) #calculation: angle 1 = 180 - angle 2 - angle 3
-      angle_adjacent_radians = math.radians(angle_adjacent) #Making angle into radian
-      side_lengths[1] = length_adjacent #putting value in list
-      
-    if angle_opposite == 0 and angle_adjacent != 0: #if the opposite angle is unknown and adjacent angle is known
-      angle_opposite = round(90 - angle_adjacent, 2) #calculation: angle 1 = 180 - angle 2 - angle 3
-      angle_opposite_radians = math.radians(angle_opposite) #Making angle into radian
-      side_lengths[2] = length_opposite #putting value in list
-  
-    if angle_adjacent == 0 and angle_opposite == 0 and length_opposite != 0 and length_hypotenuse != 0:
-      angle_adjacent_radians = math.asin(length_opposite / length_hypotenuse) #calculation: Soh Cah Toa
-      angle_opposite_radians = math.acos(length_opposite / length_hypotenuse) #calculation: Soh Cah Toa
-      angle_adjacent = round(math.degrees(angle_adjacent_radians), 2) #Making angle into a radian
-      angle_opposite = round(math.degrees(angle_opposite_radians), 2) #Making angle into a radian
-      side_lengths[1] = length_adjacent #putting value in list
-      side_lengths[2] = length_opposite #putting value in list
-      
-    elif angle_adjacent == 0 and angle_opposite == 0 and length_adjacent != 0 and length_hypotenuse != 0:
-      angle_adjacent_radians = math.asin(length_adjacent / length_hypotenuse) #calculation: Soh Cah Toa
-      angle_opposite_radians = math.acos(length_adjacent / length_hypotenuse) #calculation: Soh Cah Toa
-      angle_adjacent = round(math.degrees(angle_adjacent_radians), 2) #Making angle into a radian
-      angle_opposite = round(math.degrees(angle_opposite_radians), 2) #Making angle into a radian
-      side_lengths[1] = length_adjacent #putting value in list
-      side_lengths[2] = length_opposite #putting value in list
-  
-    elif angle_adjacent == 0 and angle_opposite == 0 and length_adjacent != 0 and length_opposite != 0:
-      angle_adjacent_radians = math.asin(length_opposite / length_adjacent) #calculation: Soh Cah Toa
-      angle_opposite_radians = math.acos(length_opposite / length_adjacent) #calculation: Soh Cah Toa
-      angle_adjacent = round(math.degrees(angle_adjacent_radians), 2) #Making angle into a radian
-      angle_opposite = round(math.degrees(angle_opposite_radians), 2) #Making angle into a radian
-      side_lengths[1] = length_adjacent #putting value in list
-      side_lengths[2] = length_opposite #putting value in list
-    
   #show user all values
   os.system('clear') #Clears screen
-  print("The adjacent angle is " + str(angle_adjacent) + "°")
-  print("The opposite angle is " + str(angle_opposite) + "°")
-  print("The hypotenuse angle is " + str(angle_hypotenuse) + "°")
-  print("The hypotenuse length is " + str(length_hypotenuse))
-  print("The adjacent length is " + str(length_adjacent))
-  print("The opposite length is " + str(length_opposite))
+  print("The adjacent angle is " + str(angle_values[1]) + "°")
+  print("The opposite angle is " + str(angle_values[2]) + "°")
+  print("The hypotenuse angle is " + str(angle_values[0]) + "°")
+  print("The hypotenuse length is " + str(side_lengths[0]))
+  print("The adjacent length is " + str(side_lengths[1]))
+  print("The opposite length is " + str(side_lengths[2]))
     
     
   #Date of Creation: 18/08/2022
@@ -277,12 +304,12 @@ while True:
   #store values in external txt file. already formated
   save_file = open("history.txt", "a")
   save_file.write("Triangle " + str(number_of_loops) + " sizes: \n")
-  save_file.write("The adjacent angle is " + str(angle_adjacent) + "°\n")
-  save_file.write("The opposite angle is " + str(angle_opposite) + "°\n")
-  save_file.write("The hypotenuse angle is " + str(angle_hypotenuse) + "°\n")
-  save_file.write("The hypotenuse length is " + str(length_hypotenuse) + "\n")
-  save_file.write("The adjacent length is " + str(length_adjacent) + "\n")
-  save_file.write("The opposite length is " + str(length_opposite) + "\n\n")
+  save_file.write("The adjacent angle is " + str(angle_values[1]) + "°\n")
+  save_file.write("The opposite angle is " + str(angle_values[2]) + "°\n")
+  save_file.write("The hypotenuse angle is " + str(angle_values[0]) + "°\n")
+  save_file.write("The hypotenuse length is " + str(angle_values[0]) + "\n")
+  save_file.write("The adjacent length is " + str(angle_values[1]) + "\n")
+  save_file.write("The opposite length is " + str(angle_values[2]) + "\n\n")
   save_file.close()
   
 
