@@ -53,7 +53,8 @@ def find_length(side_lengths): #function to find known lengths
     find_length(side_lengths)
 
   if side_lengths[0] < side_lengths[1] or side_lengths[0] < side_lengths[2]:
-    print("hypotenuse ")
+    os.system('clear') #Clears screen
+    print("Error: Hypotenuse should be the largest length value. \n")
     find_length(side_lengths)
 
   
@@ -82,7 +83,10 @@ def find_angles(angle_values, side_lengths): #function to find known angles
         #so that it doesnt loop to many times and so it will ask for the next angle
         number_known_angles += 1
         print()
-      #if they didnt enter a valid value (more than 90, less than 0)
+      #if they entered a value larger than 90 or less than 0
+      elif last_entered_angle >= 90 or last_entered_angle <= 0:
+        print("\nError: Please enter a value smaller than 90 but larger than 0")
+      #if they didnt enter a valid value
       else:
         print("\nError: Please enter a valid angle")
     #catching errors
@@ -110,7 +114,7 @@ def find_angles(angle_values, side_lengths): #function to find known angles
     do_another(do_another_triangle)
 
 
-def do_another(do_another_triangle):
+def another_triangle(do_another_triangle):
   do_another_triangle = input("do you wish to do another? ").lower()
   return do_another_triangle
    
@@ -242,6 +246,40 @@ os.system('clear') #Clears screen
 number_of_loops = 1 #variable to keep track of how many triangle the user has entered
 
 
+#Date of Creation:05/08/2022
+#purpose: ask user if they want to see the instructions, if they do show them the instructions
+#version: 1
+#creator: Daniel Prangnell
+finished_reading_instructions = "n"
+while finished_reading_instructions != "y" and finished_reading_instructions != "yes":
+  see_instructions = "no"
+  see_instructions = input("Do you wish to see the instructions? ").lower()
+  if see_instructions == "y" or see_instructions == "yes":
+    print_instructions = True
+    while print_instructions == True:
+      #instructions
+      print("This is a program that will work out any unknown values of right hand triangles. \nIt will do this by asking you for any lengths and angles you know. \nWhen the program asks you this you will enter the value, without the unit of measurement. If the value isn’t known you will enter ‘0’. \nThe program will then solve the unknown values and show them to you. \nIt will then ask if you want to do another triangle, if you don’t it will ask if you want to see all of the previous triangles that you entered this session. If you don’t it will ask you for new values.")
+      #asking if they understand the instructions
+      finished_reading_instructions = input("\nDo you understand how to use this program? ").lower()
+      #if they don't understand the instructions
+      if finished_reading_instructions == "n" or finished_reading_instructions == "no":
+        os.system('clear') #Clears screen
+      #if they understand the instructions
+      elif finished_reading_instructions != "yes" or finished_reading_instructions != "y":
+        os.system('clear') #Clears screen
+        print_instructions = False
+      #if they dont enter yes/y or no/n
+      else:
+        print("please enter yes or no")
+  #if they don't want to see the instructions      
+  elif see_instructions == "no" or see_instructions == "n":
+    os.system('clear') #Clears screen
+    break
+  #if they didn't enter yes/y or no/n
+  else:
+    print("please enter yes or no")
+
+#overall looping getting side lengths/angles, the calculations, and asking if they want to do another triangle
 while True:
 
   #Date of Creation:28/07/2022
@@ -255,9 +293,10 @@ while True:
   angle_values = [90,0,0]
   side_lengths = [0,0,0]
   two_values_entered = False
-  
-  while two_values_entered == False: #looping
-    
+  #looping until they have entered enough values
+  while two_values_entered == False: 
+
+    #getting known side lengths
     find_length(side_lengths)
     
     #Getting known angle values
@@ -269,7 +308,7 @@ while True:
     #if one length is known and one angle (other than the 90° angle) is known
     elif side_lengths.count(0) == 2 and angle_values.count(0) == 1:
       two_values_entered = True
-
+    #if they only entered one value
     else:
       os.system('clear') #Clears screen
       print("Error: only 1 value entered \n")
@@ -278,12 +317,14 @@ while True:
   #purpose: to find the lengths and angles using math
   #version: 1.0
   #creator: Daniel Prangnell
-  
+
+  #looping for calculation functions
   while angle_values.count(0) != 0 or side_lengths.count(0) != 0: #to loop the calculation functions to make sure every value is worked out
+
     length_calculations(side_lengths, angle_values) #length calulation function
 
     angle_calculations(side_lengths, angle_values) #angle calulation function
-
+  
 
   
   #show user all values
@@ -318,17 +359,29 @@ while True:
   #version: 1.0
   #creator: Daniel Prangnell
 
-  #if they want to do another triangle
-  do_another_triangle = "no"
-  do_another_triangle = do_another(do_another_triangle)
-  if do_another_triangle == "y" or do_another_triangle == "yes":
-    number_of_loops += 1
-    os.system('clear') #Clears screen
-    continue
-  else:
-    os.system('clear') #Clears screen
-    break
+  break_overall_loop = False
+  while True:
+    #variable
+    do_another_triangle = ""
+    #calling function
+    do_another_triangle = another_triangle(do_another_triangle)
+    #if they do want to do another triangle
+    if do_another_triangle == "y" or do_another_triangle == "yes":
+      number_of_loops += 1
+      os.system('clear') #Clears screen
+      continue
+    #if they don't want to do another triangle
+    elif do_another_triangle == "no" or do_another_triangle == "n":
+      #breaking the overall loop
+      break
+      break_overall_loop = True
+    #if they didn't enter yes/y or no/n
+    else:
+      #calling the function again
+      another_triangle(do_another_triangle)
 
+  if break_overall_loop == True:
+    break
   
 #show all previous values
     
