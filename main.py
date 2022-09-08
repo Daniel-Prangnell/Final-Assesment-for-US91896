@@ -53,7 +53,7 @@ def find_length(side_lengths): #function to find known lengths
     find_length(side_lengths) #looping function
 
   #checking if the hypotenuse is the largest length
-  if side_lengths[0] < side_lengths[1] or side_lengths[0] < side_lengths[2]:
+  if side_lengths[0] < side_lengths[1] and side_lengths[0] != 0 or side_lengths[0] < side_lengths[2] and side_lengths[0] != 0:
     os.system('clear') #Clears screen
     print("Error: Hypotenuse should be the largest length value. \n")
     find_length(side_lengths) #looping function
@@ -372,12 +372,12 @@ while True:
     if do_another_triangle == "y" or do_another_triangle == "yes":
       number_of_loops += 1
       os.system('clear') #Clears screen
-      continue
+      break
     #if they don't want to do another triangle
     elif do_another_triangle == "no" or do_another_triangle == "n":
       #breaking the overall loop
-      break
       break_overall_loop = True
+      break
     #if they didn't enter yes/y or no/n
     else:
       #calling the function again

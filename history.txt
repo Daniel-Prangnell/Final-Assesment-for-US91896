@@ -1,0 +1,8 @@
+Triangle 1 sizes: 
+The adjacent angle is 36.87°
+The opposite angle is 53.13°
+The hypotenuse angle is 90°
+The hypotenuse length is 90
+The adjacent length is 36.87
+The opposite length is 53.13
+
