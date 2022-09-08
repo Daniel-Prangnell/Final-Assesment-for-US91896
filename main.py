@@ -43,19 +43,20 @@ def find_length(side_lengths): #function to find known lengths
   if side_lengths.count(0) == 3:
     os.system('clear') #Clears screen
     print("Error: no values entered")
-    find_length(side_lengths)
+    find_length(side_lengths) #looping function
 
   #making sure they didnt enter an equilateral triangle
   if side_lengths[0] == side_lengths[1] == side_lengths[2]:
     os.system('clear') #Clears screen
     #print error message
     print("Error: Can not have all lengths be the same value")
-    find_length(side_lengths)
+    find_length(side_lengths) #looping function
 
+  #checking if the hypotenuse is the largest length
   if side_lengths[0] < side_lengths[1] or side_lengths[0] < side_lengths[2]:
     os.system('clear') #Clears screen
     print("Error: Hypotenuse should be the largest length value. \n")
-    find_length(side_lengths)
+    find_length(side_lengths) #looping function
 
   
   
@@ -115,6 +116,7 @@ def find_angles(angle_values, side_lengths): #function to find known angles
 
 
 def another_triangle(do_another_triangle):
+  #asking if they want to do another triangle
   do_another_triangle = input("do you wish to do another? ").lower()
   return do_another_triangle
    
@@ -256,6 +258,7 @@ while finished_reading_instructions != "y" and finished_reading_instructions != 
   see_instructions = input("Do you wish to see the instructions? ").lower()
   if see_instructions == "y" or see_instructions == "yes":
     print_instructions = True
+    os.system('clear') #Clears screen
     while print_instructions == True:
       #instructions
       print("This is a program that will work out any unknown values of right hand triangles. \nIt will do this by asking you for any lengths and angles you know. \nWhen the program asks you this you will enter the value, without the unit of measurement. If the value isn’t known you will enter ‘0’. \nThe program will then solve the unknown values and show them to you. \nIt will then ask if you want to do another triangle, if you don’t it will ask if you want to see all of the previous triangles that you entered this session. If you don’t it will ask you for new values.")
@@ -382,20 +385,28 @@ while True:
 
   if break_overall_loop == True:
     break
-  
-#show all previous values
-    
+
+
+#Date of Creation: unknown as I forgot to add a date
+#purpose: ask if they wish to see all previous triangles this session/display previous triangles
+#version: 1.0
+#creator: Daniel Prangnell
+
+#looping
 while True:
+  #asking if they wish to see prevoius triangles from thsi session
   show_previous_values = input("Do you wsh to see your previous triangles from this session? ")
-  
+
+  #if they do print everything on the text document
   if show_previous_values == "y" or show_previous_values == "yes":
     save_file = open("history.txt", "r")
     print(save_file.read())
     save_file.close()
+    #breaking the loop
     break
-  
+  #if they don't break the loop- stopping te program
   elif show_previous_values == "no" or show_previous_values == "n":
     break
-    
+  #if the enter anthing other than yes/y or no/n
   else:
     print("please enter yes or no")
