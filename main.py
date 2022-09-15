@@ -9,7 +9,6 @@ import sys
 def find_length(side_lengths): #function to find known lengths
 
   #Variables for this function
-  
   number_of_sides = 1
   sides = ["hypotenuse","adjasent","opposite"]
 
@@ -24,15 +23,11 @@ def find_length(side_lengths): #function to find known lengths
       last_entered_length = float(input("Please enter value here:"))
       #if they entered a valid number (not a negitive number or letter/word)
       if last_entered_length >= 0:
-        if side_lengths[0] < side_lengths[1] and side_lengths[0] < side_lengths[2]:
-          print("Error: The hypotenuse should be the longest length")
-          continue
-        else:
-          #inputing their input into list
-          side_lengths[number_of_sides - 1] = (last_entered_length) 
-          #so that it doesnt loop to many times and so it will ask for the next type of side
-          number_of_sides += 1
-          print()
+        #inputing their input into list
+        side_lengths[number_of_sides - 1] = (last_entered_length) 
+        #so that it doesnt loop to many times and so it will ask for the next type of side
+        number_of_sides += 1
+        print()
       else:
         #printing a error message if the value is less than 0
         print("\nError: Please enter a valid number")
@@ -40,28 +35,28 @@ def find_length(side_lengths): #function to find known lengths
     except:
       print("\nError: Please enter a valid number")
 
-  #to check if they enered atleast 1 value for length
+  #to check if they enered at least 1 value for length
   if side_lengths.count(0) == 3:
     os.system('clear') #Clears screen
-    print("Error: no values entered")
+    print("Error: no values entered \n")
+    number_of_sides = 1 #this is here to reset the loop
     find_length(side_lengths) #looping function
 
   #making sure they didnt enter an equilateral triangle
   if side_lengths[0] == side_lengths[1] == side_lengths[2]:
     os.system('clear') #Clears screen
     #print error message
-    print("Error: Can not have all lengths be the same value")
+    print("Error: Can not have all lengths be the same value \n")
+    number_of_sides = 1 #this is here to reset the loop
     find_length(side_lengths) #looping function
 
   #checking if the hypotenuse is the largest length
-  if side_lengths[0] < side_lengths[1] and side_lengths[0] != 0 or side_lengths[0] < side_lengths[2] and side_lengths[0] != 0:
-    os.system('clear') #Clears screen
-    print("Error: Hypotenuse should be the largest length value. \n")
-    print(str(side_lengths) + "\n" + str(angle_values))
-    side_lengths = [0,0,0]
-    print(str(side_lengths) + "\n" + str(angle_values))
-    
-    find_length(side_lengths) #looping function
+  if side_lengths[0] != 0:
+    if side_lengths[0] <= side_lengths[1] or side_lengths[0] <= side_lengths[2]:
+      os.system('clear') #Clears screen
+      print("Error: Hypotenuse should be the largest length value. \n")
+      number_of_sides = 1 #this is here to reset the loop
+      find_length(side_lengths) #looping function
     
 
   
@@ -254,7 +249,17 @@ def instructions():
       os.system('clear') #Clears screen
       while print_instructions == True:
         #instructions
-        print("This is a program that will work out any unknown values of right hand triangles. \nIt will do this by asking you for any lengths and angles you know. \nWhen the program asks you this you will enter the value, without the unit of measurement. If the value isn’t known you will enter ‘0’. \nThe program will then solve the unknown values and show them to you. \nIt will then ask if you want to do another triangle, if you don’t it will ask if you want to see all of the previous triangles that you entered this session. If you don’t it will ask you for new values.")
+        print("This is a program that will work out any unknown values of right hand triangles. \nIt will do this by:")
+        print("1.  asking you for any lengths and angles you know. \n    When the program asks you this you will enter the value, without the unit of measurement. \n    If the value isn’t known you will enter ‘0’.")
+        print("2.  The program will then solve the unknown values and show them to you. ")
+        print("3.  It will then ask if you want to do another triangle, if you don’t it will ask if you want to see all of the previous triangles that you entered this session. \n    If you do it will ask you for new values.")
+        print("\nWhat the different length and angles are:")
+        print("1.  The hypotenuse is the longest length. ")
+        print("2.  The adjacent length is the length adjacent to the known angle, if there is no known angle it doesn’t matter. ")
+        print("3.  The opposite length is the length opposite to the known angle, like adjacent if there is no known angle it doesn’t matter.")
+        print("4.  The adjacent angle is the angle adjacent to the known length. ")
+        print("5.  The opposite angle is the angle opposite to the known length. ")
+        print("6.  If the hypotenuse is the only known length or there is 2 known lengths- and one is not the hypotenuse- \n    choose one length to be the adjacent and work out what the other sides are from there.")
         #asking if they understand the instructions
         finished_reading_instructions = input("\nDo you understand how to use this program? ").lower()
         #if they don't understand the instructions
@@ -316,7 +321,6 @@ while True:
     
     find_angles(angle_values, side_lengths)
     two_values_entered = False
-    print(str(side_lengths) + "\n" + str(angle_values))
     #if one or no lengths are unknown
     if side_lengths.count(0) <= 1:
       two_values_entered = True
@@ -325,8 +329,9 @@ while True:
       two_values_entered = True
     #if they only entered one value
     else:
-      #os.system('clear') #Clears screen
+      os.system('clear') #Clears screen
       print("Error: Not enough values entered \n")
+    
   
   #Date of Creation: 05/08/2022
   #purpose: to find the lengths and angles using math
